@@ -8,17 +8,13 @@ const createError = require('http-errors');
 const logger = require('morgan');
 const nodemailer = require('nodemailer');
 const cors = require("cors");
-// const restify = require('restify')
-// const corsMiddleware = require('restify-cors-middleware');
 
 
 
 
 const app = express();
 
-// view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
+
 
 app.use(logger('dev'));
 app.use(bodyParser.json());
@@ -38,6 +34,11 @@ app.use(cors({
 })
 );
 
+const indexRouter = require('./routes/index');
+app.use('/api', indexRouter);
+const formRouter = require("./routes/form-router");
+app.use('/api', formRouter);
+
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
@@ -55,10 +56,6 @@ app.use(function(err, req, res, next) {
 });
 
 
-// const indexRouter = require('./routes/index');
-// app.use('/api', indexRouter);
-const formRouter = require('./routes/form-router');
-app.use('/api', formRouter);
 
 // Send React's HTML for all other routes (they might be React routes)
 // 😟 SIDE EFFECT: JSON 404 page won't work anymore
