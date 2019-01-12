@@ -30,8 +30,8 @@ router.post('/form', (req, res, next) => {
 
 //     // setup email data with unicode symbols
     let mailOptions = {
-        from: "yvensbelaston@gmail.com", // sender address
-        to: "yvensbelaston@gmail.com", // list of receivers
+        from: process.env.MAIL, // sender address
+        to: process.env.MAIL2, // list of receivers
         subject: 'New Lead ✔', // Subject line
         text: 'Hello world?', // plain text body
         html: output // html body

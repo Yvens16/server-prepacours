@@ -13,6 +13,9 @@ const cors = require("cors");
 
 
 const app = express();
+app.listen(() => {
+  console.log(`Server is running at port ${process.env.REACT_APP_SERVER_URL}`);
+})
 
 
 
