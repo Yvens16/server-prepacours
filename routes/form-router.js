@@ -1,7 +1,5 @@
 const express = require('express');
 const router = express.Router();
-// const { google } = require("googleapis");
-// const OAuth2 = google.auth.OAuth2;
 const {auth} = require('google-auth-library');
 const nodemailer = require('nodemailer'); 
 
@@ -14,10 +12,14 @@ if (!keys){
 
 async function main() {
     // load the JWT or UserRefreshClient from the keys
+   try { 
     const client = auth.fromJSON(keys);
     client.scopes = ['https://www.googleapis.com/auth/cloud-platform'];
     const url = `https://www.googleapis.com/dns/v1/projects/${keys.project_id}`;
-    const res = await client.request({url});
+    // const res = await client.request({url}); //J'ai une erreur à cette ligne
+    } catch (err) {
+        console.log(err);
+    }
   }
   
   main().catch(console.error);
