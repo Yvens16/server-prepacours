@@ -4,3 +4,6 @@ node_modules
 
 # Debug log from npm
 npm-debug.log
+
+#google_API_keys
+oauth2.keys.json

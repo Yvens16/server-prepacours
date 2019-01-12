@@ -1,7 +1,26 @@
 const express = require('express');
 const router = express.Router();
-const nodemailer = require('nodemailer');
+// const { google } = require("googleapis");
+// const OAuth2 = google.auth.OAuth2;
+const {auth} = require('google-auth-library');
+const nodemailer = require('nodemailer'); 
 
+const keysEnv = process.env['CREDS'];
+const keys = JSON.parse(keysEnv);
+if (!keys){
+    throw new Error('The $keys environment variable was not found!');
+}
+
+
+async function main() {
+    // load the JWT or UserRefreshClient from the keys
+    const client = auth.fromJSON(keys);
+    client.scopes = ['https://www.googleapis.com/auth/cloud-platform'];
+    const url = `https://www.googleapis.com/dns/v1/projects/${keys.project_id}`;
+    const res = await client.request({url});
+  }
+  
+  main().catch(console.error);
 
 router.post('/form', (req, res, next) => {
   const output = `
@@ -20,8 +39,12 @@ router.post('/form', (req, res, next) => {
         service:'Gmail',
         secure: true, // true for 465, false for other ports
         auth: {
-            user: process.env.MAIL, // generated ethereal user
-            pass: process.env.PASS, // generated ethereal password
+            type: 'OAuth2',
+            user: 'yvensbelaston@gmail.com',
+            serviceClient: keys.client_id,
+            privateKey: keys.private_key,
+            refreshToken: process.env.REFRESHTOKEN,
+            accessToken: process.env.TOKEN
         },
         tls:{
           rejectUnauthorized: false
