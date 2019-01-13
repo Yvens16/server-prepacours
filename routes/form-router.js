@@ -21,8 +21,8 @@ router.post('/form', (req, res, next) => {
 
     sgMail.setApiKey(process.env.SENDGRID_API_KEY);
     const msg = {
-    to: 'maths@xn--prpacours-c4a.fr',
-    from: 'maths@xn--prpacours-c4a.fr',
+    to: process.env.MAIL2,
+    from: process.env.MAIL2,
     subject: 'New Lead ✔',
     text: 'and easy to do anywhere, even with Node.js',
     html: output,
