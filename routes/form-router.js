@@ -3,7 +3,7 @@ const router = express.Router();
 const sgMail = require('@sendgrid/mail');
 const nodemailer = require('nodemailer'); 
 
-
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 router.post('/form', (req, res, next) => {
     const output = `
@@ -16,10 +16,6 @@ router.post('/form', (req, res, next) => {
         <li>À rappeller le: ${req.body.date}</li>
     </ul>`;
 
-
-    console.log('output', output);
-
-    sgMail.setApiKey(process.env.SENDGRID_API_KEY);
     const msg = {
     to: process.env.MAIL2,
     from: process.env.MAIL2,
