@@ -18,24 +18,29 @@ app.listen(() => {
 })
 
 
-
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
+app.get('/*', function (req, res) {
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
+
 
 
 
 // const cors = corsMiddleware
-app.use(cors({
-  // allow other domains/origins to send cookies
-  credentials: true,
-  // this is the domain we want cookies from (our React app)
-  origin: ["http://localhost:3000"]
-})
-);
+app.use(
+  cors({
+    // allow other domains/origins to send cookies
+    credentials: true,
+    // this is the domain we want cookies from (our React app)
+    origin: ['http://localhost:3000']
+  })
+)
+
 
 const indexRouter = require('./routes/index');
 app.use('/api', indexRouter);
@@ -57,25 +62,9 @@ app.use(function(err, req, res, next) {
 
   // render the error page
   res.status(err.status || 500);
-  res.json('error');
+  res.json('There is a 404 error');
 });
 
-
-
-// Send React's HTML for all other routes (they might be React routes)
-// 😟 SIDE EFFECT: JSON 404 page won't work anymore
-app.use((req, res, next) => {
-  res.sendFile(path.join(__dirname, "public", "index.html"));
-});
-
-
-//MAYBE TO SOLVE REACT ROUTING PROBLEM
-// app.get('/*', function(req, res) {
-//   res.sendFile(path.join(__dirname, 'path/to/your/index.html'), function(err) {
-//     if (err) {
-//       res.status(500).send(err)
-//     }
-//   })
-// })
+// let env = app.get('env');
 
 module.exports = app;
